@@ -126,7 +126,6 @@ public class AuthService {
         headers.put("Accept", "application/json");
         headers.put("Authorization", token);
         final Call<FlightScheduleData> request = api.flightSchedules(headers, originAirport, destinationAirport, departureDate, isDirectFlight);
-        Log.d("FlightList_response", request.request().url().toString());
         request.enqueue(new Callback<FlightScheduleData>() {
             @Override
             public void onResponse(@NonNull Call<FlightScheduleData> call, @NonNull Response<FlightScheduleData> response) {
@@ -135,7 +134,6 @@ public class AuthService {
                     FlightScheduleData scheduleData = response.body();
                     if (scheduleData != null) {
                         List<Schedule> flightSchedule = scheduleData.scheduleResource.scheduleList;
-                        Log.d("flightSize", flightData.size()+"");
                         Log.d("myScheduleList2", new Gson().toJson(flightSchedule));
                         requestCallback.requestSuccess(flightSchedule);
                     }else {
