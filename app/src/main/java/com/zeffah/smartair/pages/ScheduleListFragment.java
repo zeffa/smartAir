@@ -9,12 +9,10 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.zeffah.smartair.R;
 import com.zeffah.smartair.adapters.FlightListAdapter;
@@ -96,9 +94,8 @@ public class ScheduleListFragment extends Fragment implements FlightItemClickCal
 
     @Override
     public void onItemClick(Schedule schedule, int position) {
-        if (getArguments() != null){
+        if (getArguments() != null) {
             List<Flight> flightList = schedule.getFlight();
-            Log.d("flightsListInSchedule", flightList.size()+"");
             Position origin = (Position) getArguments().getSerializable(ORIGIN_AIRPORT_POSITION);
             Position destination = (Position) getArguments().getSerializable(DESTINATION_AIRPORT_POSITION);
             AppHelper.openPage(context, MapsFragment.newInstance(origin, destination, flightList), true);

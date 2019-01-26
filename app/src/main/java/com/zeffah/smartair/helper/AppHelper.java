@@ -15,7 +15,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -24,17 +23,20 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.zeffah.smartair.R;
 import com.zeffah.smartair.api.ApiClient;
 import com.zeffah.smartair.api.ApiInterface;
 import com.zeffah.smartair.datamanager.pojo.Airport;
-import com.zeffah.smartair.datamanager.pojo.Coordinate;
-import com.zeffah.smartair.datamanager.pojo.Departure;
 import com.zeffah.smartair.datamanager.pojo.Flight;
 import com.zeffah.smartair.datamanager.pojo.Point;
-import com.zeffah.smartair.datamanager.pojo.Position;
+import com.zeffah.smartair.datamanager.pojo.Schedule;
 
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -73,37 +75,74 @@ public class AppHelper {
         dialogFragment.show(manager, dialogFragment.getClass().getSimpleName());
     }
 
-    public static Airport getAirport(String airportCode, List<Airport> airports){
-        for (Airport _airport:airports){
-            if (_airport.getAirportCode().equals(airportCode)){
+    public static Airport getAirport(String airportCode, List<Airport> airports) {
+        for (Airport _airport : airports) {
+            if (_airport.getAirportCode().equals(airportCode)) {
                 return _airport;
             }
         }
         return null;
     }
 
-    public static List<Point> flightPoints(List<Flight> flightList, List<Airport> airportList){
-        List<Point> pointList = new ArrayList<>();
-        if (flightList != null && !flightList.isEmpty() && airportList != null){
-            for (int i = 0; i < flightList.size()-1; i++){
-                Point point = new Point();
-                Flight flight = flightList.get(i);
-                Airport departureAirport = getAirport(flight.getDeparture().getAirportCode(), airportList);
-                if (departureAirport != null){
-                    point.departure = flight.getDeparture();
-                    point.coordinate = departureAirport.getPosition().getCordinate();
-                    point.name = departureAirport.getNames().getNameInfo().getAirportName();
-                    pointList.add(point);
-                }
+    public static List<Schedule> getScheduleList(JsonObject scheduleData) {
+        JsonObject resToJSON = scheduleData.get("ScheduleResource").getAsJsonObject();
+        JsonArray schedulesArray = resToJSON.get("Schedule").getAsJsonArray();
+        for (JsonElement element : schedulesArray) {
+            JsonObject schedule = element.getAsJsonObject();
+            JsonElement flight = schedule.get("Flight");
+            if (flight.isJsonObject()) {
+                JsonArray array = new JsonArray();
+                array.add(flight);
+                schedule.add("Flight", array);
             }
-            Point last = new Point();
-            Flight lastFlight = flightList.get(flightList.size()-1);
-            Airport arrivalAirport = getAirport(lastFlight.getArrival().getAirportCode(), airportList);
-            if (arrivalAirport != null) {
-                last.departure = lastFlight.getDeparture();
-                last.coordinate = arrivalAirport.getPosition().getCordinate();
-                last.name = arrivalAirport.getNames().getNameInfo().getAirportName();
-                pointList.add(last);
+        }
+        Type listType = new TypeToken<ArrayList<Schedule>>() {
+        }.getType();
+        return new Gson().fromJson(schedulesArray, listType);
+    }
+
+    public static List<Point> flightPoints(List<Flight> flightList, List<Airport> airportList) {
+        List<Point> pointList = new ArrayList<>();
+        if (flightList != null && !flightList.isEmpty() && airportList != null) {
+            if (flightList.size() > 1) {
+                for (int i = 0; i < flightList.size() - 1; i++) {
+                    Point point = new Point();
+                    Flight flight = flightList.get(i);
+                    Airport departureAirport = getAirport(flight.getDeparture().getAirportCode(), airportList);
+                    if (departureAirport != null) {
+                        point.departure = flight.getDeparture();
+                        point.coordinate = departureAirport.getPosition().getCordinate();
+                        point.name = departureAirport.getNames().getNameInfo().getAirportName();
+                        pointList.add(point);
+                    }
+                }
+                Point last = new Point();
+                Flight lastFlight = flightList.get(flightList.size() - 1);
+                Airport arrivalAirport = getAirport(lastFlight.getArrival().getAirportCode(), airportList);
+                if (arrivalAirport != null) {
+                    last.departure = lastFlight.getDeparture();
+                    last.coordinate = arrivalAirport.getPosition().getCordinate();
+                    last.name = arrivalAirport.getNames().getNameInfo().getAirportName();
+                    pointList.add(last);
+                }
+            } else {
+                Flight flight = flightList.get(0);
+                Airport departureAirport = getAirport(flight.getDeparture().getAirportCode(), airportList);
+                Airport arrivalAirport = getAirport(flight.getArrival().getAirportCode(), airportList);
+                if (arrivalAirport != null && departureAirport != null) {
+                    Point pointOrigin = new Point();
+                    pointOrigin.departure = flight.getDeparture();
+                    pointOrigin.coordinate = departureAirport.getPosition().getCordinate();
+                    pointOrigin.name = departureAirport.getNames().getNameInfo().getAirportName();
+                    pointList.add(pointOrigin);
+
+                    Point pointDest = new Point();
+                    pointDest.departure = flight.getDeparture();
+                    pointDest.coordinate = arrivalAirport.getPosition().getCordinate();
+                    pointDest.name = arrivalAirport.getNames().getNameInfo().getAirportName();
+                    pointList.add(pointDest);
+                }
+
             }
             return pointList;
         }

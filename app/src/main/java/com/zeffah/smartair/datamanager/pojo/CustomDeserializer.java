@@ -13,13 +13,24 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomDeserializer implements JsonDeserializer<List<Airport>> {
+public class CustomDeserializer implements JsonDeserializer<List<Schedule>> {
 
     @Override
-    public List<Airport> deserialize(JsonElement json, Type typeOfT_, JsonDeserializationContext context) throws JsonParseException {
-        JsonObject resToJSON = json.getAsJsonObject().get("AirportResource").getAsJsonObject();
-        JsonArray airports = resToJSON.get("Airports").getAsJsonObject().get("Airport").getAsJsonArray();
-        Type airportListType = new TypeToken<ArrayList<Airport>>(){}.getType();
-        return new Gson().fromJson(airports, airportListType);
+    public List<Schedule> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        JsonObject resToJSON = json.getAsJsonObject().get("ScheduleResource").getAsJsonObject();
+        JsonArray scheduleList = resToJSON.get("Schedule").getAsJsonArray();
+        for (int i = 0; i < scheduleList.size(); i++) {
+            JsonObject schedule = scheduleList.get(i).getAsJsonObject();
+            JsonElement flight = schedule.get("Flight");
+            if (flight.isJsonObject()) {
+                JsonArray array = new JsonArray();
+                array.add(flight);
+                if (scheduleList.remove(flight)) {
+                    scheduleList.set(i, array);
+                }
+            }
+        }
+        Type scheduleListType = new TypeToken<ArrayList<Schedule>>() {}.getType();
+        return new Gson().fromJson(scheduleList, scheduleListType);
     }
 }

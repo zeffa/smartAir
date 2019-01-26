@@ -1,7 +1,7 @@
 package com.zeffah.smartair.api;
 
+import com.google.gson.JsonObject;
 import com.zeffah.smartair.datamanager.pojo.AirportData;
-import com.zeffah.smartair.datamanager.pojo.FlightScheduleData;
 import com.zeffah.smartair.datamanager.pojo.Token;
 
 import java.util.Map;
@@ -24,5 +24,5 @@ public interface ApiInterface {
     Call<AirportData> fetchAirports(@HeaderMap Map<String, String> headers, @Query("LHoperated") boolean isLHOperated, @Query("lang") String languageCode);
 
     @GET("operations/schedules/{origin}/{destination}/{departureDate}")
-    Call<FlightScheduleData> flightSchedules(@HeaderMap Map<String, String> headers, @Path("origin") String originAirport, @Path("destination") String destinationAirport, @Path("departureDate") String departureDate, @Query("directFlights") boolean directFlights);
+    Call<JsonObject> flightSchedules(@HeaderMap Map<String, String> headers, @Path("origin") String originAirport, @Path("destination") String destinationAirport, @Path("departureDate") String departureDate, @Query("directFlights") boolean directFlights);
 }

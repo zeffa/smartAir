@@ -5,15 +5,16 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.zeffah.smartair.api.ApiInterface;
-import com.zeffah.smartair.callback.ServerRequestCallback;
 import com.zeffah.smartair.callback.OnAuthCallback;
+import com.zeffah.smartair.callback.ServerRequestCallback;
 import com.zeffah.smartair.datamanager.pojo.Airport;
 import com.zeffah.smartair.datamanager.pojo.AirportData;
-import com.zeffah.smartair.datamanager.pojo.FlightScheduleData;
 import com.zeffah.smartair.datamanager.pojo.Schedule;
 import com.zeffah.smartair.datamanager.pojo.Token;
 import com.zeffah.smartair.dialog.ProgressDialog;
+import com.zeffah.smartair.helper.AppHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,7 +70,7 @@ public class AuthService {
                     }
                 } catch (Exception e) {
                     authCallback.authFailed("Unknown Error. Please try again.");
-                    Log.d("Auth_token_error_1", "Unknown Error. Please try again. => "+e.getLocalizedMessage());
+                    Log.d("Auth_token_error_1", "Unknown Error. Please try again. => " + e.getLocalizedMessage());
                 }
             }
 
@@ -97,7 +98,7 @@ public class AuthService {
                         Log.d("myAirportList", new Gson().toJson(airportList));
                         if (airportList != null && !airportList.isEmpty()) {
                             requestCallback.requestSuccess(airportList);
-                        }else {
+                        } else {
                             requestCallback.requestFailed("No airports Found for your Search");
                         }
                     }
@@ -125,19 +126,21 @@ public class AuthService {
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Accept", "application/json");
         headers.put("Authorization", token);
-        final Call<FlightScheduleData> request = api.flightSchedules(headers, originAirport, destinationAirport, departureDate, isDirectFlight);
-        request.enqueue(new Callback<FlightScheduleData>() {
+        final Call<JsonObject> request = api.flightSchedules(headers, originAirport, destinationAirport, departureDate, isDirectFlight);
+        request.enqueue(new Callback<JsonObject>() {
             @Override
-            public void onResponse(@NonNull Call<FlightScheduleData> call, @NonNull Response<FlightScheduleData> response) {
-                Log.d("FlightList_response", response.toString());
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 try {
-                    FlightScheduleData scheduleData = response.body();
+                    JsonObject scheduleData = response.body();
                     if (scheduleData != null) {
-                        List<Schedule> flightSchedule = scheduleData.scheduleResource.scheduleList;
-                        Log.d("myScheduleList2", new Gson().toJson(flightSchedule));
-                        requestCallback.requestSuccess(flightSchedule);
-                    }else {
-                        requestCallback.requestFailed(response.errorBody() != null? response.errorBody().string(): "Could not fetch schedules. Try again");
+                        List<Schedule> scheduleList = AppHelper.getScheduleList(scheduleData);
+                        if (scheduleList != null && !scheduleList.isEmpty()) {
+                            requestCallback.requestSuccess(scheduleList);
+                        } else {
+                            requestCallback.requestFailed("No Schedules for selected airports");
+                        }
+                    } else {
+                        requestCallback.requestFailed(response.errorBody() != null ? response.errorBody().string() : "Could not fetch schedules. Try again");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -146,7 +149,7 @@ public class AuthService {
             }
 
             @Override
-            public void onFailure(@NonNull Call<FlightScheduleData> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
                 Log.d("FlightList_error", t.getLocalizedMessage() + "");
                 requestCallback.requestFailed("Please Check Your Internet Connection");
             }
