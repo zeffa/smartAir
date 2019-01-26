@@ -1,0 +1,42 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="zero">0dip</dimen>
+    <dimen name="one">1dp</dimen>
+    <dimen name="two">2dp</dimen>
+    <dimen name="four">4dp</dimen>
+    <dimen name="six">6dp</dimen>
+    <dimen name="eight">8dp</dimen>
+    <dimen name="ten">10dp</dimen>
+    <dimen name="twelve">12dp</dimen>
+    <dimen name="fourteen">14dp</dimen>
+    <dimen name="fifteen">15dp</dimen>
+    <dimen name="sixteen">16dp</dimen>
+    <dimen name="eighteen">18dp</dimen>
+    <dimen name="twenty">20dp</dimen>
+    <dimen name="twenty_two">22dp</dimen>
+    <dimen name="twenty_four">24dp</dimen>
+    <dimen name="twenty_six">26dp</dimen>
+    <dimen name="twenty_eight">28dp</dimen>
+    <dimen name="thirty">30dp</dimen>
+    <dimen name="thirty_two">32dp</dimen>
+    <dimen name="thirty_four">34dp</dimen>
+    <dimen name="thirty_six">36dp</dimen>
+    <dimen name="thirty_eight">38dp</dimen>
+    <dimen name="forty">40dp</dimen>
+    <dimen name="forty_two">42dp</dimen>
+    <dimen name="forty_four">44dp</dimen>
+    <dimen name="forty_six">46dp</dimen>
+    <dimen name="forty_eight">48dp</dimen>
+    <dimen name="fifty">50dp</dimen>
+
+    <!--text sizes-->
+    <dimen name="text_size_twelve">12sp</dimen>
+    <dimen name="text_size_thirteen">13sp</dimen>
+    <dimen name="text_size_fourteen">14sp</dimen>
+    <dimen name="text_size_fifteen">15sp</dimen>
+    <dimen name="text_size_sixteen">16sp</dimen>
+    <dimen name="text_size_seventeen">17sp</dimen>
+    <dimen name="text_size_eighteen">18sp</dimen>
+    <dimen name="text_size_nineteen">19sp</dimen>
+    <dimen name="text_size_twenty">20sp</dimen>
+</resources>

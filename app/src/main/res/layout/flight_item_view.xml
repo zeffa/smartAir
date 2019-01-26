@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/two"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="@dimen/zero"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/eight">
+
+            <ImageView android:id="@+id/img_flight_icon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="@dimen/eight"
+                android:src="@drawable/ic_flight_24dp"
+                android:background="@drawable/image_round"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView android:id="@+id/txt_flight_number"
+                android:layout_width="@dimen/zero"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_eighteen"
+                android:textStyle="bold"
+                android:textColor="@color/colorAccent"
+                android:layout_marginLeft="@dimen/eight"
+                android:layout_marginStart="@dimen/eight"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/img_flight_icon"
+                android:text="@string/flight_number"/>
+
+            <TextView android:id="@+id/lbl_flight_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/four"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@+id/txt_flight_number"
+                app:layout_constraintLeft_toLeftOf="@+id/txt_flight_number"
+                android:text="Duration: "/>
+
+            <TextView android:id="@+id/txt_flight_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/four"
+                android:textColor="@color/colorAccent"
+                android:layout_marginLeft="@dimen/four"
+                android:layout_marginStart="@dimen/four"
+                app:layout_constraintTop_toBottomOf="@+id/txt_flight_number"
+                app:layout_constraintLeft_toRightOf="@+id/lbl_flight_duration"
+                android:text="PT16H30M: "/>
+
+            <View android:id="@+id/view_divider"
+                android:layout_width="@dimen/zero"
+                android:layout_height="@dimen/one"
+                android:background="@color/silver"
+                android:layout_marginTop="@dimen/four"
+                app:layout_constraintLeft_toLeftOf="@+id/lbl_flight_duration"
+                app:layout_constraintTop_toBottomOf="@+id/lbl_flight_duration"/>
+
+            <TextView android:id="@+id/lbl_departure_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/eight"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@+id/view_divider"
+                app:layout_constraintLeft_toLeftOf="@+id/view_divider"
+                android:text="@string/departure"/>
+
+            <TextView android:id="@+id/txt_departure_Date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/four"
+                android:layout_marginLeft="@dimen/four"
+                app:layout_constraintBaseline_toBaselineOf="@+id/lbl_departure_date"
+                app:layout_constraintLeft_toRightOf="@+id/lbl_departure_date"
+                android:text="20091/23/12"/>
+
+            <TextView android:id="@+id/lbl_effective_from"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/eight"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@+id/lbl_departure_date"
+                app:layout_constraintLeft_toLeftOf="@+id/lbl_departure_date"
+                android:text="@string/effective_from"/>
+
+            <TextView android:id="@+id/txt_effective_from"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBaseline_toBaselineOf="@+id/lbl_effective_from"
+                app:layout_constraintLeft_toLeftOf="@+id/txt_departure_Date"
+                android:text="ABZ"/>
+
+            <TextView android:id="@+id/lbl_expiry_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/eight"
+                android:layout_marginTop="@dimen/eight"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@+id/lbl_effective_from"
+                app:layout_constraintLeft_toLeftOf="@+id/lbl_effective_from"
+                android:text="@string/expiry_date"/>
+
+            <TextView android:id="@+id/txt_expiry_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/eight"
+                app:layout_constraintBaseline_toBaselineOf="@+id/lbl_expiry_date"
+                app:layout_constraintLeft_toLeftOf="@+id/txt_departure_Date"
+                android:text="ABZ"/>
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.v7.widget.CardView>
+
+</android.support.constraint.ConstraintLayout>

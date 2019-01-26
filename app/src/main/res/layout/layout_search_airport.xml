@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/eighteen"
+    android:background="@color/gray"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <AutoCompleteTextView android:id="@+id/autocomplete_origin_airport"
+        android:layout_width="@dimen/zero"
+        android:layout_height="@dimen/fifty"
+        android:singleLine="true"
+        android:imeOptions="actionNext"
+        android:hint="@string/search_origin_airport"
+        android:paddingLeft="@dimen/eight"
+        android:paddingStart="@dimen/eight"
+        android:paddingEnd="@dimen/eight"
+        android:paddingRight="@dimen/eight"
+        android:background="@drawable/autocomplete_text_view"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <AutoCompleteTextView android:id="@+id/autocomplete_destination_airport"
+        android:layout_width="@dimen/zero"
+        android:layout_height="@dimen/fifty"
+        android:singleLine="true"
+        android:imeOptions="actionDone"
+        android:layout_marginTop="@dimen/four"
+        android:hint="@string/search_destination_airport"
+        android:paddingLeft="@dimen/eight"
+        android:paddingStart="@dimen/eight"
+        android:paddingEnd="@dimen/eight"
+        android:paddingRight="@dimen/eight"
+        android:background="@drawable/autocomplete_text_view"
+        app:layout_constraintTop_toBottomOf="@+id/autocomplete_origin_airport"
+        app:layout_constraintRight_toRightOf="@+id/autocomplete_origin_airport"
+        app:layout_constraintLeft_toLeftOf="@+id/autocomplete_origin_airport"/>
+
+    <TextView android:id="@+id/edt_departure_date"
+        android:layout_width="@dimen/zero"
+        android:layout_height="@dimen/fifty"
+        android:hint="@string/departure_date"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/eight"
+        android:paddingStart="@dimen/eight"
+        android:paddingEnd="@dimen/eight"
+        android:paddingRight="@dimen/eight"
+        android:layout_marginTop="@dimen/four"
+        android:background="@drawable/autocomplete_text_view"
+        app:layout_constraintLeft_toLeftOf="@+id/autocomplete_destination_airport"
+        app:layout_constraintRight_toRightOf="@+id/autocomplete_destination_airport"
+        app:layout_constraintTop_toBottomOf="@+id/autocomplete_destination_airport"/>
+
+    <Button android:id="@+id/btn_get_flight_schedules"
+        android:layout_width="@dimen/zero"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:text="@string/get_flight_schedules"
+        android:background="@drawable/button_success"
+        android:textStyle="bold"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/sixteen"
+    tools:context=".pages.LandingPageFragment">
+
+    <TextView
+        android:id="@+id/txt_company_name"
+        android:layout_width="@dimen/zero"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/smartair_international"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/text_size_seventeen"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.406" />
+
+    <TextView android:id="@+id/txt_company_slogan"
+        android:layout_width="@dimen/zero"
+        android:layout_height="wrap_content"
+        android:text="@string/smart_air_slogan"
+        android:gravity="center"
+        android:textColor="@android:color/tab_indicator_text"
+        android:layout_marginTop="@dimen/twenty_four"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_company_name"/>
+
+    <Button android:id="@+id/btn_start"
+        android:layout_width="@dimen/zero"
+        android:layout_height="wrap_content"
+        android:text="@string/start_now"
+        android:paddingLeft="@dimen/sixteen"
+        android:paddingRight="@dimen/sixteen"
+        android:paddingStart="@dimen/sixteen"
+        android:paddingEnd="@dimen/sixteen"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="@dimen/eight"
+        android:background="@drawable/button_success"
+        app:layout_constraintLeft_toLeftOf="@+id/txt_company_slogan"
+        app:layout_constraintRight_toRightOf="@+id/txt_company_slogan"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <com.wang.avi.AVLoadingIndicatorView android:id="@+id/avi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:indicatorColor="@color/black"
+        android:layout_marginTop="@dimen/thirty_four"
+        android:layout_marginStart="@dimen/four"
+        android:layout_marginLeft="@dimen/four"
+        app:indicatorName="LineSpinFadeLoaderIndicator"
+        app:layout_constraintTop_toBottomOf="@+id/txt_company_slogan"
+        app:layout_constraintLeft_toLeftOf="@+id/btn_start"
+        app:layout_constraintRight_toRightOf="@+id/btn_start"
+        style="@style/AVLoadingIndicatorView.Small"/>
+
+</android.support.constraint.ConstraintLayout>

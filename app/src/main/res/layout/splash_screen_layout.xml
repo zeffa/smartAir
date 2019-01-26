@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView android:id="@+id/txt_company_name"
+        android:layout_width="@dimen/zero"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:gravity="center_horizontal"/>
+
+    <com.wang.avi.AVLoadingIndicatorView android:id="@+id/avi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:layout_marginTop="@dimen/four"
+        app:indicatorName="BallGridPulseIndicator"
+        app:layout_constraintTop_toBottomOf="@+id/txt_company_name"
+        app:layout_constraintLeft_toLeftOf="@+id/txt_company_name"
+        app:layout_constraintRight_toRightOf="@+id/txt_company_name"
+        style="@style/AVLoadingIndicatorView"/>
+
+    <TextView android:id="@+id/txt_company_copyright"
+        android:text="@string/copyright"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="17sp"
+        android:textColor="@android:color/white"
+        android:gravity="center_horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</android.support.constraint.ConstraintLayout>
