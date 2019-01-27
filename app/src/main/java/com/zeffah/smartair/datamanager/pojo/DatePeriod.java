@@ -2,7 +2,9 @@ package com.zeffah.smartair.datamanager.pojo;
 
 import com.google.gson.annotations.SerializedName;
 
-public class DatePeriod {
+import java.io.Serializable;
+
+public class DatePeriod implements Serializable {
     @SerializedName("Effective")
     private String effectiveDate;
     @SerializedName("Expiration")

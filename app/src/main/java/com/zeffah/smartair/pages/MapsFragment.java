@@ -44,10 +44,14 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     public static MapsFragment newInstance(Position origin, Position destination, List<Flight> flightList) {
         Bundle args = new Bundle();
         MapsFragment fragment = new MapsFragment();
-        args.putSerializable(ProgressDialog.DESTINATION_AIRPORT, destination);
-        args.putSerializable(ProgressDialog.ORIGIN_AIRPORT, origin);
-        args.putSerializable(ProgressDialog.FLIGHT_LIST, (Serializable) flightList);
-        fragment.setArguments(args);
+        try {
+            args.putSerializable(ProgressDialog.DESTINATION_AIRPORT, destination);
+            args.putSerializable(ProgressDialog.ORIGIN_AIRPORT, origin);
+            args.putSerializable(ProgressDialog.FLIGHT_LIST, (Serializable) flightList);
+            fragment.setArguments(args);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return fragment;
     }
 
@@ -115,27 +119,31 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     @SuppressWarnings("unchecked")
     private void initMarkers() {
-        if (getArguments() != null) {
-            Position origin = (Position) getArguments().getSerializable(ProgressDialog.ORIGIN_AIRPORT);
-            Position destination = (Position) getArguments().getSerializable(ProgressDialog.DESTINATION_AIRPORT);
-            if (origin != null && destination != null) {
-                LatLng originLatLng = new LatLng(origin.getCordinate().getLatitude(), origin.getCordinate().getLongitude());
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(originLatLng, 0f));
-            }
+       try {
+           if (getArguments() != null) {
+               Position origin = (Position) getArguments().getSerializable(ProgressDialog.ORIGIN_AIRPORT);
+               Position destination = (Position) getArguments().getSerializable(ProgressDialog.DESTINATION_AIRPORT);
+               if (origin != null && destination != null) {
+                   LatLng originLatLng = new LatLng(origin.getCordinate().getLatitude(), origin.getCordinate().getLongitude());
+                   map.moveCamera(CameraUpdateFactory.newLatLngZoom(originLatLng, 0f));
+               }
 
-            /*Display icon on map and draw route through all connections in case flight not direct*/
-            List<Flight> flightList = (List<Flight>) getArguments().getSerializable(ProgressDialog.FLIGHT_LIST);
-            List<Airport> airportList = airportViewModel.getAirportList().getValue();
-            if (flightList != null && !flightList.isEmpty() && airportList != null) {
-                List<Point> pointList = AppHelper.flightPoints(flightList, airportList);
-                List<LatLng> polyPoints = new ArrayList<>();
-                for (Point point : pointList) {
-                    LatLng latLng = new LatLng(point.coordinate.getLatitude(), point.coordinate.getLongitude());
-                    polyPoints.add(latLng);
-                    map.addMarker(new MarkerOptions().position(new LatLng(point.coordinate.getLatitude(), point.coordinate.getLongitude())).title(point.name));
-                }
-                map.addPolyline(new PolylineOptions().addAll(polyPoints).width(2).color(Color.BLUE).geodesic(true));
-            }
-        }
+               /*Display icon on map and draw route through all connections in case flight not direct*/
+               List<Flight> flightList = (List<Flight>) getArguments().getSerializable(ProgressDialog.FLIGHT_LIST);
+               List<Airport> airportList = airportViewModel.getAirportList().getValue();
+               if (flightList != null && !flightList.isEmpty() && airportList != null) {
+                   List<Point> pointList = AppHelper.flightPoints(flightList, airportList);
+                   List<LatLng> polyPoints = new ArrayList<>();
+                   for (Point point : pointList) {
+                       LatLng latLng = new LatLng(point.coordinate.getLatitude(), point.coordinate.getLongitude());
+                       polyPoints.add(latLng);
+                       map.addMarker(new MarkerOptions().position(new LatLng(point.coordinate.getLatitude(), point.coordinate.getLongitude())).title(point.name));
+                   }
+                   map.addPolyline(new PolylineOptions().addAll(polyPoints).width(2).color(Color.BLUE).geodesic(true));
+               }
+           }
+       }catch (Exception e){
+           e.printStackTrace();
+       }
     }
 }

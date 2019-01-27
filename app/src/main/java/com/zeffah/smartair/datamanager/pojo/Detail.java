@@ -2,7 +2,9 @@ package com.zeffah.smartair.datamanager.pojo;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Detail {
+import java.io.Serializable;
+
+public class Detail implements Serializable {
     @SerializedName("DatePeriod")
     private DatePeriod datePeriod;
 

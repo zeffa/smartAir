@@ -2,7 +2,9 @@ package com.zeffah.smartair.datamanager.pojo;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Flight {
+import java.io.Serializable;
+
+public class Flight implements Serializable {
     @SerializedName("Departure")
     private Departure departure;
     @SerializedName("Arrival")

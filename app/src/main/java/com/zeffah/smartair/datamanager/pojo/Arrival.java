@@ -2,7 +2,9 @@ package com.zeffah.smartair.datamanager.pojo;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Arrival {
+import java.io.Serializable;
+
+public class Arrival implements Serializable {
     @SerializedName("AirportCode")
     private String airportCode;
     @SerializedName("ScheduledTimeLocal")
