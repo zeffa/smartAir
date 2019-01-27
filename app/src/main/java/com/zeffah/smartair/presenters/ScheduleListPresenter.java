@@ -29,14 +29,18 @@ public class ScheduleListPresenter implements ScheduleListPresenterContract, Sch
     @Override
     public void getFlightSchedule(Bundle flightData, boolean isDirectFlight) {
         if (flightData != null) {
-            schedulesViewContract.showProcessing(loadingIndicatorView);
+            if (loadingIndicatorView != null){
+                schedulesViewContract.showProcessing(loadingIndicatorView);
+            }
             repository.getFlightSchedules(flightData, isDirectFlight, this);
         }
     }
 
     @Override
     public void handleSchedulesResponse(Response<JsonObject> schedulesResponse) {
-        schedulesViewContract.hideProcessingDialog(loadingIndicatorView);
+        if (loadingIndicatorView != null){
+            schedulesViewContract.hideProcessingDialog(loadingIndicatorView);
+        }
         if (schedulesResponse.isSuccessful()) {
             JsonObject scheduleData = schedulesResponse.body();
             if (scheduleData != null) {
@@ -56,7 +60,9 @@ public class ScheduleListPresenter implements ScheduleListPresenterContract, Sch
 
     @Override
     public void handleSchedulesError() {
-        schedulesViewContract.hideProcessingDialog(loadingIndicatorView);
+        if (loadingIndicatorView != null){
+            schedulesViewContract.hideProcessingDialog(loadingIndicatorView);
+        }
         schedulesViewContract.displayError("Please check your connection");
     }
 

@@ -1,5 +1,7 @@
 package com.zeffah.smartair.presenters;
 
+import android.support.annotation.Nullable;
+
 import com.wang.avi.AVLoadingIndicatorView;
 import com.zeffah.smartair.contracts.AirportListPresenterContract;
 import com.zeffah.smartair.contracts.AirportsViewContract;
@@ -16,7 +18,7 @@ public class AirportsPresenter implements AirportListPresenterContract, AirportR
     private final AirportRepository repository;
     private final AVLoadingIndicatorView loadingIndicatorView;
 
-    public AirportsPresenter(AirportsViewContract airportViewContract, AirportRepository repository, AVLoadingIndicatorView loadingIndicatorView) {
+    public AirportsPresenter(AirportsViewContract airportViewContract, AirportRepository repository, @Nullable AVLoadingIndicatorView loadingIndicatorView) {
         this.airportViewContract = airportViewContract;
         this.loadingIndicatorView = loadingIndicatorView;
         this.repository = repository;
@@ -24,13 +26,17 @@ public class AirportsPresenter implements AirportListPresenterContract, AirportR
 
     @Override
     public void getAirports(String token, boolean isLHOperated, String lang) {
-        airportViewContract.showProcessing(loadingIndicatorView);
+        if (loadingIndicatorView != null){
+            airportViewContract.showProcessing(loadingIndicatorView);
+        }
         repository.getAirports(token, isLHOperated, lang, this);
     }
 
     @Override
     public void handleAirportsResponse(Response<AirportData> airportResponse) {
-        airportViewContract.hideProcessingDialog(loadingIndicatorView);
+        if (loadingIndicatorView != null){
+            airportViewContract.hideProcessingDialog(loadingIndicatorView);
+        }
         if (airportResponse.isSuccessful()) {
             AirportData airportRs = airportResponse.body();
             if (airportRs != null) {
@@ -50,6 +56,9 @@ public class AirportsPresenter implements AirportListPresenterContract, AirportR
 
     @Override
     public void handleAirportsError() {
+        if (loadingIndicatorView != null){
+            airportViewContract.hideProcessingDialog(loadingIndicatorView);
+        }
         airportViewContract.displayError("Please check your Internet");
     }
 }
