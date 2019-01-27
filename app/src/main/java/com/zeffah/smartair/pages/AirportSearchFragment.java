@@ -26,12 +26,10 @@ import com.zeffah.smartair.adapters.AirportSearchAdapter;
 import com.zeffah.smartair.callback.DialogDismissListener;
 import com.zeffah.smartair.datamanager.pojo.Airport;
 import com.zeffah.smartair.datamanager.viewmodel.AirportViewModel;
-import com.zeffah.smartair.datamanager.viewmodel.FlightViewModel;
 import com.zeffah.smartair.dialog.ProgressDialog;
 import com.zeffah.smartair.helper.AppHelper;
 import com.zeffah.smartair.helper.DrawablePosition;
 
-import java.util.Calendar;
 import java.util.List;
 
 public class AirportSearchFragment extends Fragment implements TextWatcher, View.OnTouchListener,
@@ -41,7 +39,6 @@ public class AirportSearchFragment extends Fragment implements TextWatcher, View
     private TextView txtDepartureDate;
     private Button btnGetSchedules;
     private AirportViewModel airportViewModel;
-    private FlightViewModel flightViewModel;
     private Airport destinationAirport, originAirport;
     private String departureDate = null;
 
@@ -166,13 +163,7 @@ public class AirportSearchFragment extends Fragment implements TextWatcher, View
     @Override
     public void onClick(View v) {
         if (v == txtDepartureDate) {
-            Calendar calendar = Calendar.getInstance();
-            DatePickerDialog datePickerDialog = new DatePickerDialog(
-                    context, AirportSearchFragment.this,
-                    calendar.get(Calendar.YEAR),
-                    calendar.get(Calendar.MONTH),
-                    calendar.get(Calendar.DAY_OF_MONTH));
-            datePickerDialog.show();
+            AppHelper.showDatePickerDialog(context, this);
             return;
         }
         if (v == btnGetSchedules) {
@@ -188,7 +179,7 @@ public class AirportSearchFragment extends Fragment implements TextWatcher, View
                 Toast.makeText(context, R.string.select_departure_date, Toast.LENGTH_SHORT).show();
                 return;
             }
-            if (originAirport.getAirportCode().equals(destinationAirport.getAirportCode())){
+            if (originAirport.getAirportCode().equals(destinationAirport.getAirportCode())) {
                 Toast.makeText(context, "Origin and Destination Cannot be same", Toast.LENGTH_SHORT).show();
                 return;
             }

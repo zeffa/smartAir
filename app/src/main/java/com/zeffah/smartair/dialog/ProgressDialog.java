@@ -15,24 +15,26 @@ import android.widget.TextView;
 
 import com.wang.avi.AVLoadingIndicatorView;
 import com.zeffah.smartair.R;
-import com.zeffah.smartair.api.service.AuthService;
+import com.zeffah.smartair.api.ApiInterface;
 import com.zeffah.smartair.callback.DialogDismissListener;
-import com.zeffah.smartair.callback.ServerRequestCallback;
-import com.zeffah.smartair.datamanager.pojo.Flight;
+import com.zeffah.smartair.contracts.SchedulesViewContract;
 import com.zeffah.smartair.datamanager.pojo.Schedule;
 import com.zeffah.smartair.datamanager.pojo.Token;
 import com.zeffah.smartair.datamanager.pref.PreferenceData;
 import com.zeffah.smartair.datamanager.viewmodel.FlightViewModel;
+import com.zeffah.smartair.helper.AppHelper;
+import com.zeffah.smartair.presenters.ScheduleListPresenter;
+import com.zeffah.smartair.repository.ScheduleRepository;
 
 import java.util.List;
 
-public class ProgressDialog extends DialogFragment implements ServerRequestCallback {
+public class ProgressDialog extends DialogFragment implements SchedulesViewContract {
     public static final String DESTINATION_AIRPORT = "DESTINATION_AIRPORT";
     public static final String ORIGIN_AIRPORT = "ORIGIN_AIRPORT";
     public static final String FLIGHT_LIST = "FLIGHT_LIST";
     public static final String DEPARTURE_DATE = "DEPARTURE_DATE";
     public static final String AUTH_TOKEN = "AUTH_TOKEN";
-    private static String FLIGHT_INFO_KEY = "FLIGHT_INFO_KEY";
+    private static final String FLIGHT_INFO_KEY = "FLIGHT_INFO_KEY";
     private TextView txtProgressMessage;
     private AVLoadingIndicatorView loadingIndicatorView;
     private PreferenceData prefData;
@@ -59,7 +61,7 @@ public class ProgressDialog extends DialogFragment implements ServerRequestCallb
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Holo_Light);
-        flightViewModel = ViewModelProviders.of((AppCompatActivity)context).get(FlightViewModel.class);
+        flightViewModel = ViewModelProviders.of((AppCompatActivity) context).get(FlightViewModel.class);
         prefData = new PreferenceData(context);
         if (getArguments() != null) {
             flightData = getArguments().getBundle(FLIGHT_INFO_KEY);
@@ -90,27 +92,43 @@ public class ProgressDialog extends DialogFragment implements ServerRequestCallb
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        loadingIndicatorView.smoothToShow();
         txtProgressMessage.setText(view.getContext().getResources().getString(R.string.flights_progress_message));
         Token token = prefData.getToken();
+        ApiInterface api = AppHelper.getApi;
+        ScheduleRepository repository = new ScheduleRepository(api);
+        ScheduleListPresenter presenter = new ScheduleListPresenter(this, repository, loadingIndicatorView);
         if (token != null) {
             flightData.putString(AUTH_TOKEN, "Bearer " + token.accessToken);
-            AuthService.getFlightSchedules(flightData, false, this);
+            presenter.getFlightSchedule(flightData, false);
         }
     }
 
-    @Override @SuppressWarnings("unchecked")
-    public void requestSuccess(List<?> schedules) {
-        loadingIndicatorView.smoothToHide();
+    @Override
+    public void displayScheduleResults(@NonNull List<Schedule> schedules) {
         this.dismiss();
-        flightViewModel.setFLightList((List<Schedule>) schedules);
+        flightViewModel.setFLightList(schedules);
         dismissListener.onDismiss(schedules, null);
     }
 
     @Override
-    public void requestFailed(String error) {
-        loadingIndicatorView.smoothToHide();
+    public void displayError() {
+        txtProgressMessage.setText(String.format("%s", getString(R.string.no_flight_available)));
+        txtProgressMessage.setTextColor(ContextCompat.getColor(context, android.R.color.holo_red_light));
+    }
+
+    @Override
+    public void displayError(String error) {
         txtProgressMessage.setText(error);
         txtProgressMessage.setTextColor(ContextCompat.getColor(context, android.R.color.holo_red_light));
+    }
+
+    @Override
+    public void showProcessing(AVLoadingIndicatorView loadingIndicatorView) {
+        loadingIndicatorView.smoothToShow();
+    }
+
+    @Override
+    public void hideProcessingDialog(AVLoadingIndicatorView loadingIndicatorView) {
+        loadingIndicatorView.smoothToHide();
     }
 }

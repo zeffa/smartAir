@@ -26,4 +26,5 @@
     <string name="expiry_date">Expiration: </string>
     <string name="flight_number">Flight Number</string>
     <string name="departure">Departure: </string>
+    <string name="not_found">Can\'t find flight Schedules</string>
 </resources>
