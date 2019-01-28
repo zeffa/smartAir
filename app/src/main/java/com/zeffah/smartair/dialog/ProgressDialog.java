@@ -96,7 +96,7 @@ public class ProgressDialog extends DialogFragment implements SchedulesViewContr
         Token token = prefData.getToken();
         ApiInterface api = AppHelper.getApi;
         ScheduleRepository repository = new ScheduleRepository(api);
-        ScheduleListPresenter presenter = new ScheduleListPresenter(this, repository, loadingIndicatorView);
+        ScheduleListPresenter presenter = new ScheduleListPresenter(this, repository);
         if (token != null) {
             flightData.putString(AUTH_TOKEN, "Bearer " + token.accessToken);
             presenter.getFlightSchedule(flightData, false);
@@ -123,12 +123,12 @@ public class ProgressDialog extends DialogFragment implements SchedulesViewContr
     }
 
     @Override
-    public void showProcessing(AVLoadingIndicatorView loadingIndicatorView) {
+    public void showProcessing() {
         loadingIndicatorView.smoothToShow();
     }
 
     @Override
-    public void hideProcessingDialog(AVLoadingIndicatorView loadingIndicatorView) {
+    public void hideProcessingDialog() {
         loadingIndicatorView.smoothToHide();
     }
 }

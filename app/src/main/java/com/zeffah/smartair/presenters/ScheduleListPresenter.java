@@ -18,33 +18,27 @@ public class ScheduleListPresenter implements ScheduleListPresenterContract, Sch
 
     private final SchedulesViewContract schedulesViewContract;
     private final ScheduleRepository repository;
-    private final AVLoadingIndicatorView loadingIndicatorView;
 
-    public ScheduleListPresenter(SchedulesViewContract schedulesViewContract, ScheduleRepository repository, AVLoadingIndicatorView loadingIndicatorView) {
+    public ScheduleListPresenter(SchedulesViewContract schedulesViewContract, ScheduleRepository repository) {
         this.schedulesViewContract = schedulesViewContract;
-        this.loadingIndicatorView = loadingIndicatorView;
         this.repository = repository;
     }
 
     @Override
     public void getFlightSchedule(Bundle flightData, boolean isDirectFlight) {
         if (flightData != null) {
-            if (loadingIndicatorView != null){
-                schedulesViewContract.showProcessing(loadingIndicatorView);
-            }
+            schedulesViewContract.showProcessing();
             repository.getFlightSchedules(flightData, isDirectFlight, this);
         }
     }
 
     @Override
     public void handleSchedulesResponse(Response<JsonObject> schedulesResponse) {
-        if (loadingIndicatorView != null){
-            schedulesViewContract.hideProcessingDialog(loadingIndicatorView);
-        }
+        schedulesViewContract.hideProcessingDialog();
         if (schedulesResponse.isSuccessful()) {
             JsonObject scheduleData = schedulesResponse.body();
             if (scheduleData != null) {
-                List<Schedule> scheduleList = AppHelper.getScheduleList(scheduleData);
+                List<Schedule> scheduleList = new AppHelper().getScheduleList(scheduleData);
                 if (scheduleList != null && !scheduleList.isEmpty()) {
                     schedulesViewContract.displayScheduleResults(scheduleList);
                 } else {
@@ -60,9 +54,7 @@ public class ScheduleListPresenter implements ScheduleListPresenterContract, Sch
 
     @Override
     public void handleSchedulesError() {
-        if (loadingIndicatorView != null){
-            schedulesViewContract.hideProcessingDialog(loadingIndicatorView);
-        }
+        schedulesViewContract.hideProcessingDialog();
         schedulesViewContract.displayError("Please check your connection");
     }
 

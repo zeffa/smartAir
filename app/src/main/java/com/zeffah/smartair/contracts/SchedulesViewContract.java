@@ -15,8 +15,8 @@ public interface SchedulesViewContract {
 
     void displayError(String s);
 
-    void showProcessing(AVLoadingIndicatorView loadingIndicatorView);
+    void showProcessing();
 
-    void hideProcessingDialog(AVLoadingIndicatorView loadingIndicatorView);
+    void hideProcessingDialog();
 
 }

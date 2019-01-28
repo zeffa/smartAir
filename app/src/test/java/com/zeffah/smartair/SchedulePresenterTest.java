@@ -2,7 +2,10 @@ package com.zeffah.smartair;
 
 import android.os.Bundle;
 
+import com.google.gson.JsonObject;
 import com.zeffah.smartair.contracts.SchedulesViewContract;
+import com.zeffah.smartair.datamanager.pojo.Schedule;
+import com.zeffah.smartair.helper.AppHelper;
 import com.zeffah.smartair.presenters.ScheduleListPresenter;
 import com.zeffah.smartair.repository.ScheduleRepository;
 
@@ -11,10 +14,15 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.MockitoSession;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Response;
 
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 public class SchedulePresenterTest {
     private ScheduleListPresenter presenter;
@@ -26,7 +34,7 @@ public class SchedulePresenterTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        presenter = spy(new ScheduleListPresenter(viewContract, repository, null));
+        presenter = spy(new ScheduleListPresenter(viewContract, repository));
     }
 
     @Test
@@ -43,26 +51,16 @@ public class SchedulePresenterTest {
         Mockito.verify(repository, Mockito.times(1)).getFlightSchedules(flightBundle, false, presenter);
     }
 
-//    @SuppressWarnings("unchecked")
-//    @Test
-//    public void handleSchedulesSuccess() {
-//        Response response = Mockito.mock(Response.class);
-//        JsonObject searchResponse = Mockito.mock(JsonObject.class);
-//        Mockito.doReturn(true).when(response).isSuccessful();
-//        Mockito.doReturn(searchResponse).when(response).body();
-//        List<Schedule> searchResults = new ArrayList<>();
-//        searchResults.add(new Schedule());
-//        searchResults.add(new Schedule());
-//        searchResults.add(new Schedule());
-//
-//        AppHelper helper = spy(new AppHelper());
-//        Mockito.when(helper.getScheduleList(searchResponse)).thenReturn(new ArrayList<Schedule>());
-//        Mockito.doReturn(searchResults).when(searchResponse);
-//        // trigger
-//        presenter.handleSchedulesResponse(response);
-//        // validation
-//        Mockito.verify(viewContract, Mockito.times(1)).displayScheduleResults(searchResults);
-//    }
+    @Test
+    public void getScheduleListFromResponse(){
+        JsonObject scheduleResponse = Mockito.mock(JsonObject.class);
+        AppHelper appHelperMock = Mockito.mock(AppHelper.class);
+        List<Schedule> scheduleResults = new ArrayList<>();
+        scheduleResults.add(new Schedule());
+        scheduleResults.add(new Schedule());
+        scheduleResults.add(new Schedule());
+        Mockito.when(appHelperMock.getScheduleList(scheduleResponse)).thenReturn(scheduleResults);
+    }
 
     @Test
     @SuppressWarnings("unchecked")

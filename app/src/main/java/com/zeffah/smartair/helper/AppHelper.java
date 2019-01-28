@@ -73,7 +73,7 @@ public class AppHelper {
         return null;
     }
 
-    public static List<Schedule> getScheduleList(JsonObject scheduleData) {
+    public List<Schedule> getScheduleList(JsonObject scheduleData) {
         JsonObject resToJSON = scheduleData.get("ScheduleResource").getAsJsonObject();
         JsonArray schedulesArray = resToJSON.get("Schedule").getAsJsonArray();
         for (JsonElement element : schedulesArray) {
